@@ -112,6 +112,8 @@ flowchart TD
     Z --> H
 ```
 
+> **💡 Conseil — Graphify.** Avant de planifier, utilisez [Graphify](https://github.com/safishamsi/graphify) pour cartographier la base de code (graphe de connaissance : dépendances, relations entre fichiers, communautés). Claude s'appuie sur ce graphe au lieu de relire tout le code à chaque question : plus **rapide**, et surtout **beaucoup moins de tokens consommés**. Particulièrement utile pour affiner l'évaluation « gros chantier ? » et cadrer le plan.
+
 ## Prompts conseillés
 
 Pour tirer le meilleur parti des profils, deux prompts sont recommandés dans votre `CLAUDE.md` (global ou projet). Le premier déclenche une phase de planification avant les gros chantiers ; le second, une fois le plan validé, propose de répartir le travail entre les sous-agents profils.
