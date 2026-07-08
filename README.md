@@ -16,6 +16,7 @@ claude-profiles/
 ├── profil-knowledge-worker.plugin  # gestion de connaissances, Obsidian, wiki
 ├── profil-manager-ops.plugin       # pilotage, orchestration, ops (Octopus, Plannotator)
 ├── profil-marketing.plugin         # marketing, SEO, growth, contenu (~180 skills)
+├── profil-migrator-lovable.plugin  # agent de migration : Lovable → paradigme END
 └── profil-video.plugin             # production et analyse vidéo
 ```
 
@@ -78,9 +79,55 @@ Certaines dépendances **ne peuvent pas** être embarquées dans le plugin (inst
 | **knowledge-worker** | `/knowledge-worker` | Gestion de connaissances, Obsidian, wiki, second brain | ~17 (wiki-*, obsidian-*, think) |
 | **manager-ops** | `/manager-ops` | Pilotage, orchestration multi-agents, ops, PRD | ~78 (Octopus flow-*/skill-*, Plannotator) |
 | **marketing** | `/marketing` | Marketing, SEO, growth, contenu, ads, email | ~180 (seo-*, blog-*, ads, growth) |
+| **migrator-lovable** | `/migrator-lovable` | Agent de migration (famille) — Lovable → paradigme END | 12 (pipeline complet, voir section dédiée) |
 | **video** | `/video` | Production et analyse vidéo, clips YouTube | 4 (claude-video, video-perception…) |
 
 Les skills sont **agrégées depuis ~15-20 dépôts GitHub tiers** (stitch-kit, claude-octopus, ai-marketing-skills, plannotator, n8n-skills, etc.), puis repackagées par profil. Chaque `README.md` de plugin liste la **source GitHub** de chaque skill.
+
+## Agents de migration
+
+Les **agents de migration** forment une **famille de profils à part** : ce ne sont pas des packs de skills tierces, mais des **agents spécialisés conçus sur mesure** pour migrer un codebase existant d'une **techno source** donnée vers un **paradigme cible**. Chaque agent de la famille cible une techno source précise (`migrator-<source>`) et partage la même mécanique : init + cartographie graphify, pipeline en ordre strict (diagnostic → correspondance → migration écran par écran → gates verts → audit), artefacts dans `<target>/.plans/migration/`.
+
+| Agent | Techno source | Statut |
+|-------|---------------|--------|
+| **`migrator-lovable`** | Prototype Lovable (React mocké) | ✅ Disponible |
+| `migrator-symfony` | Application Symfony | 🔜 À venir |
+| `migrator-laravel` | Application Laravel | 🔜 À venir |
+
+> La liste s'étoffera au fil des besoins. Chaque nouvel agent suit le même squelette que `migrator-lovable` — seuls la techno source analysée et la table de correspondance changent.
+
+### `migrator-lovable` (disponible)
+
+Migre un **prototype Lovable** (React mocké, structure plate) vers le **paradigme cible « station END »** — architecture feature-based, TanStack Router (file-routes), façade `apiClient` mockée, i18n END (react-i18next), primitives shadcn/ui + `cn()`.
+
+Objectif d'une migration : un front **fonctionnel, testé (Vitest) et vérifié** (typecheck + lint + build verts). Les données restent **mockées** derrière une façade à la signature des hooks API générés (Orval + TanStack Query), pour brancher la vraie API plus tard sans refacto.
+
+#### Les agents en jeu
+
+| Agent | Contexte d'exécution | Rôle |
+|-------|----------------------|------|
+| **Boucle principale** (`/profil-migrator-lovable:init`) | Session Claude Code | Amorçage : archive la source en `.legacy/`, prépare `.plans/migration/`, `.gitignore`, `pnpm install` + baseline (`tsc --noEmit` + `build`) |
+| **2 sous-agents graphify** | Spawnés par l'init, en parallèle | Cartographient les 2 codebases (proto source et repo cible) en graphes de connaissance |
+| **Sous-agent `migrator-lovable`** (`/migrator-lovable`) | Son propre contexte, autonome | Orchestre le pipeline de migration complet, du diagnostic à l'audit final |
+
+#### Le pipeline (ordre strict)
+
+1. `analyze-source` → inventaire du proto (`SOURCE_INVENTORY.md`)
+2. `extract-target-paradigm` → paradigme END résolu contre le repo cible réel
+3. `build-correspondence-map` → table de correspondance start→end + cas non mappables
+4. `migrate-assets` → icônes/images/SVG vers les conventions END (lucide-react, `public/`)
+5. `extract-shadcn-variables` → référentiel du design system END (design 1/3)
+6. `migrate-css-to-bridge` → CSS custom du proto dans `src/styles/bridge/` (design 2/3)
+7. `apply-shadcn-variables` → alignement du bridge sur les tokens `@seekube/brand` (design 3/3)
+8. `scaffold-app-shell` → pose du socle d'app END (router, i18n, apiClient…), vert avant l'écran 1
+9. `migrate-screen` → migration d'UN écran walking-skeleton, test unitaire d'abord
+10. `verify-migration` → gates verts obligatoires (typecheck, lint, build, Vitest) avant de généraliser
+11. Généralisation écran par écran (`migrate-screen` → `verify-migration`)
+12. `audit-conformity` → audit final, note /100 + plan d'action priorisé
+
+Tous les artefacts du pipeline vivent dans `<target>/.plans/migration/`.
+
+📄 **Détail complet de chaque agent et de son fonctionnement : [docs/migration-agents.html](docs/migration-agents.html)**
 
 ## Doctrine commune
 
