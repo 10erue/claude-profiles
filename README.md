@@ -18,7 +18,12 @@ claude-profiles/
 ├── profil-marketing.plugin         # marketing, SEO, growth, contenu (~180 skills)
 ├── profil-migrator-lovable.plugin  # agent de migration : Lovable → paradigme END
 └── profil-video.plugin             # production et analyse vidéo
+├── autonomous/                     # forks self-contained (sans prérequis) des profils qui ont un doublon retiré
+│   ├── profil-dev-saas-autonomous.plugin
+│   └── profil-starter-autonomous.plugin
 ```
+
+Deux profils (`dev-saas`, `starter`) ont eu des skills/serveurs MCP dupliqués avec des plugins officiels déjà installés (`caveman`, `ecc`) retirés de leur version principale, pour éviter le doublon si tu as déjà ces plugins installés. Si tu préfères une installation "zéro prérequis" (tout embarqué, quitte à dupliquer), utilise la version `autonomous/profil-<nom>-autonomous.plugin` à la place.
 
 Chaque fichier `.plugin` est en réalité une **archive ZIP** (inspectable avec `unzip -l fichier.plugin`).
 
@@ -67,14 +72,14 @@ Point clé du système : plusieurs profils peuvent être lancés **sur la même 
 Chaque sous-agent travaille indépendamment et remonte son analyse.
 
 ### Actions manuelles
-Certaines dépendances **ne peuvent pas** être embarquées dans le plugin (installations globales, autres plugins de marketplace, serveurs MCP nécessitant une clé API). Le `README.md` de chaque profil liste ces **« actions manuelles à faire »** — à réaliser soi-même. Exemples : `frontend-design`, `superpowers`, `claude-mem`, `n8n-mcp`, `magic-mcp`.
+Certaines dépendances **ne peuvent pas** être embarquées dans le plugin (installations globales, autres plugins de marketplace, serveurs MCP nécessitant une clé API). Le `README.md` de chaque profil liste ces **« actions manuelles à faire »** — à réaliser soi-même. Exemples : `frontend-design`, `superpowers`, `claude-mem`, `n8n-mcp`, `magic-mcp`, `caveman`, `ecc`.
 
 ## Les profils
 
 | Profil | Commande | Périmètre | Skills embarquées |
 |--------|----------|-----------|-------------------|
 | **starter** | `/starter` | Base neutre, générique. Amorce puis route vers un profil spécialisé | 0 (que du manuel) |
-| **dev-saas** | `/dev-saas` | Dev SaaS, workflows n8n, code review, refactor, debug | ~30 (caveman, n8n-*, review-*) |
+| **dev-saas** | `/dev-saas` | Dev SaaS, workflows n8n, code review, refactor, debug | ~25 (n8n-*, review-*, cavecrew, caveman-stats ; caveman en prérequis) |
 | **designer** | `/designer` | UI/UX, Stitch, design systems, génération de composants | ~72 (stitch-*, taste, ui-ux-pro-max) |
 | **knowledge-worker** | `/knowledge-worker` | Gestion de connaissances, Obsidian, wiki, second brain | ~17 (wiki-*, obsidian-*, think) |
 | **manager-ops** | `/manager-ops` | Pilotage, orchestration multi-agents, ops, PRD | ~78 (Octopus flow-*/skill-*, Plannotator) |
@@ -242,7 +247,7 @@ sans plan préalable.
 
 ## Qualité & maintenance
 
-Les plugins ont fait l'objet d'un **audit qualité** : correction de skills non chargeables (frontmatter cassé), suppression de préambules de télémétrie parasites, normalisation des noms en kebab-case, résolution de collisions de noms. Résultat : **383/383 skills parsent correctement**, 0 skill morte, 0 collision.
+Les plugins ont fait l'objet d'un **audit qualité** : correction de skills non chargeables (frontmatter cassé), suppression de préambules de télémétrie parasites, normalisation des noms en kebab-case, résolution de collisions de noms. Résultat : **378/378 skills parsent correctement**, 0 skill morte, 0 collision (383 au total avant le retrait des 5 skills caveman dupliquées de dev-saas — voir `autonomous/` pour la version non-dédupliquée).
 
 Les doublons de skills entre profils (ex. `autoresearch`, `ui-ux-pro-max`) sont **intentionnels** : chaque profil embarque sa propre variante, namespacée par plugin — aucun conflit.
 
