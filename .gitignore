@@ -6,3 +6,5 @@ docs
 .work/
 .playwright-mcp/
 .omc
+# Added by code-review-graph
+.code-review-graph/
