@@ -1,6 +1,6 @@
 # claude-profiles
 
-**Dépôt : https://github.com/rbazantay-thetribe/claude-profiles**
+**Dépôt : https://github.com/10erue/claude-profiles**
 
 Collection de **profils métier packagés pour Claude Code**. Chaque profil est un plugin Claude Code (`.plugin`) qui regroupe, autour d'un métier, un ensemble cohérent de *skills* tierces, un sous-agent dédié et une commande slash pour l'invoquer.
 
@@ -17,13 +17,8 @@ claude-profiles/
 ├── profil-manager-ops.plugin       # pilotage, orchestration, ops (Octopus, Plannotator)
 ├── profil-marketing.plugin         # marketing, SEO, growth, contenu (~180 skills)
 ├── profil-migrator-lovable.plugin  # agent de migration : Lovable → paradigme END
-├── profil-video.plugin             # production et analyse vidéo
-└── autonomous/                     # forks self-contained (sans prérequis) des profils qui ont un doublon retiré
-    ├── profil-dev-saas-autonomous.plugin
-    └── profil-starter-autonomous.plugin
+└── profil-video.plugin             # production et analyse vidéo
 ```
-
-Deux profils (`dev-saas`, `starter`) ont eu des skills/serveurs MCP dupliqués avec des plugins officiels déjà installés (`caveman`, `ecc`) retirés de leur version principale, pour éviter le doublon si tu as déjà ces plugins installés. Si tu préfères une installation "zéro prérequis" (tout embarqué, quitte à dupliquer), utilise la version `autonomous/profil-<nom>-autonomous.plugin` à la place.
 
 Chaque fichier `.plugin` est en réalité une **archive ZIP** (inspectable avec `unzip -l fichier.plugin`).
 
