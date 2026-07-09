@@ -74,6 +74,8 @@ Chaque sous-agent travaille indépendamment et remonte son analyse.
 ### Actions manuelles
 Certaines dépendances **ne peuvent pas** être embarquées dans le plugin (installations globales, autres plugins de marketplace, serveurs MCP nécessitant une clé API). Le `README.md` de chaque profil liste ces **« actions manuelles à faire »** — à réaliser soi-même. Exemples : `frontend-design`, `superpowers`, `claude-mem`, `n8n-mcp`, `magic-mcp`, `caveman`, `ecc`.
 
+Chaque profil ajoute aussi une commande **`/init`** (`/profil-<nom>:init` en cas de collision entre profils installés en parallèle) : elle vérifie l'état de ces prérequis un par un et, pour ceux qui le permettent (la plupart — installs de plugins/CLI/SDK sans secret requis), propose de les installer directement, avec confirmation explicite avant toute action. Seuls les prérequis nécessitant une clé API, une info propre à ton infra, ou un fichier personnel restent strictement manuels.
+
 ## Les profils
 
 | Profil | Commande | Périmètre | Skills embarquées |
